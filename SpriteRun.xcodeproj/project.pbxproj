@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1101D0FD15F159CD004DD342 /* GameOverLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 1101D0FC15F159CD004DD342 /* GameOverLayer.m */; };
+		112620AB15F04A6B00B48B13 /* zoo.png in Resources */ = {isa = PBXBuildFile; fileRef = 112620AA15F04A6B00B48B13 /* zoo.png */; };
+		112620B015F04FEC00B48B13 /* cat.png in Resources */ = {isa = PBXBuildFile; fileRef = 112620AD15F04FEC00B48B13 /* cat.png */; };
+		112620B115F04FEC00B48B13 /* dog.png in Resources */ = {isa = PBXBuildFile; fileRef = 112620AE15F04FEC00B48B13 /* dog.png */; };
+		112620B215F04FEC00B48B13 /* turtle.png in Resources */ = {isa = PBXBuildFile; fileRef = 112620AF15F04FEC00B48B13 /* turtle.png */; };
+		112620B415F04FFE00B48B13 /* bird.png in Resources */ = {isa = PBXBuildFile; fileRef = 112620B315F04FFE00B48B13 /* bird.png */; };
 		11C0098F15F0234B0045294C /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C0098E15F0234B0045294C /* QuartzCore.framework */; };
 		11C0099115F0234B0045294C /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C0099015F0234B0045294C /* OpenGLES.framework */; };
 		11C0099315F0234B0045294C /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11C0099215F0234B0045294C /* OpenAL.framework */; };
@@ -133,9 +139,17 @@
 		11C00B1A15F0234D0045294C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C00B1915F0234D0045294C /* AppDelegate.m */; };
 		11C00B1D15F0234D0045294C /* HelloWorldLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C00B1C15F0234D0045294C /* HelloWorldLayer.m */; };
 		11C00B2015F0234D0045294C /* IntroLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = 11C00B1F15F0234D0045294C /* IntroLayer.m */; };
+		11C00B2715F026740045294C /* seeker.png in Resources */ = {isa = PBXBuildFile; fileRef = 11C00B2615F026740045294C /* seeker.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1101D0FB15F159CD004DD342 /* GameOverLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameOverLayer.h; sourceTree = "<group>"; };
+		1101D0FC15F159CD004DD342 /* GameOverLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GameOverLayer.m; sourceTree = "<group>"; };
+		112620AA15F04A6B00B48B13 /* zoo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = zoo.png; sourceTree = "<group>"; };
+		112620AD15F04FEC00B48B13 /* cat.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cat.png; sourceTree = "<group>"; };
+		112620AE15F04FEC00B48B13 /* dog.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = dog.png; sourceTree = "<group>"; };
+		112620AF15F04FEC00B48B13 /* turtle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = turtle.png; sourceTree = "<group>"; };
+		112620B315F04FFE00B48B13 /* bird.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bird.png; sourceTree = "<group>"; };
 		11C0098A15F0234B0045294C /* SpriteRun.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SpriteRun.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		11C0098E15F0234B0045294C /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		11C0099015F0234B0045294C /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -398,6 +412,7 @@
 		11C00B1C15F0234D0045294C /* HelloWorldLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HelloWorldLayer.m; sourceTree = "<group>"; };
 		11C00B1E15F0234D0045294C /* IntroLayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IntroLayer.h; sourceTree = "<group>"; };
 		11C00B1F15F0234D0045294C /* IntroLayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IntroLayer.m; sourceTree = "<group>"; };
+		11C00B2615F026740045294C /* seeker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = seeker.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -465,6 +480,8 @@
 				11C009A115F0234B0045294C /* Resources */,
 				11C009BB15F0234B0045294C /* libs */,
 				11C00B1415F0234D0045294C /* Supporting Files */,
+				1101D0FB15F159CD004DD342 /* GameOverLayer.h */,
+				1101D0FC15F159CD004DD342 /* GameOverLayer.m */,
 			);
 			path = SpriteRun;
 			sourceTree = "<group>";
@@ -473,6 +490,12 @@
 			isa = PBXGroup;
 			children = (
 				11C009A215F0234B0045294C /* Default.png */,
+				112620AA15F04A6B00B48B13 /* zoo.png */,
+				112620AD15F04FEC00B48B13 /* cat.png */,
+				112620AE15F04FEC00B48B13 /* dog.png */,
+				112620AF15F04FEC00B48B13 /* turtle.png */,
+				112620B315F04FFE00B48B13 /* bird.png */,
+				11C00B2615F026740045294C /* seeker.png */,
 				11C009A415F0234B0045294C /* Default-Landscape~ipad.png */,
 				11C009A615F0234B0045294C /* fps_images.png */,
 				11C009A815F0234B0045294C /* fps_images-hd.png */,
@@ -895,6 +918,12 @@
 				11C009B715F0234B0045294C /* Icon@2x.png in Resources */,
 				11C009BA15F0234B0045294C /* iTunesArtwork in Resources */,
 				11C00AF815F0234D0045294C /* ChangeLog in Resources */,
+				11C00B2715F026740045294C /* seeker.png in Resources */,
+				112620AB15F04A6B00B48B13 /* zoo.png in Resources */,
+				112620B015F04FEC00B48B13 /* cat.png in Resources */,
+				112620B115F04FEC00B48B13 /* dog.png in Resources */,
+				112620B215F04FEC00B48B13 /* turtle.png in Resources */,
+				112620B415F04FFE00B48B13 /* bird.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1009,6 +1038,7 @@
 				11C00B1A15F0234D0045294C /* AppDelegate.m in Sources */,
 				11C00B1D15F0234D0045294C /* HelloWorldLayer.m in Sources */,
 				11C00B2015F0234D0045294C /* IntroLayer.m in Sources */,
+				1101D0FD15F159CD004DD342 /* GameOverLayer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1112,6 +1142,7 @@
 				11C00B2515F0234D0045294C /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
