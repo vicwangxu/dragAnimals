@@ -12,11 +12,28 @@
 
 // Needed to obtain the Navigation Controller
 #import "AppDelegate.h"
+#import "CCTouchDispatcher.h"
+#import "IntroLayer.h"
+#import "GameOverLayer.h"
 
 #pragma mark - HelloWorldLayer
 
+int animalCount = 0;
+
+
 // HelloWorldLayer implementation
 @implementation HelloWorldLayer
+{
+    CGPoint init_position;
+    CCSprite* _zoo;
+    CCSprite* selSprite;
+    NSMutableArray *_movableSprite;
+    CCLabelTTF *animalNameLabel;
+    NSMutableArray *animalName;
+    int randomAnimalIndex;
+    
+    NSMutableArray *displayedName;
+}
 
 // Helper class method that creates a Scene with the HelloWorldLayer as the only child.
 +(CCScene *) scene
@@ -39,71 +56,169 @@
 {
 	// always call "super" init
 	// Apple recommends to re-assign "self" with the "super's" return value
-	if( (self=[super init]) ) {
-		
-		// create and initialize a Label
-		CCLabelTTF *label = [CCLabelTTF labelWithString:@"Hello World" fontName:@"Marker Felt" fontSize:64];
-
-		// ask director for the window size
-		CGSize size = [[CCDirector sharedDirector] winSize];
-	
-		// position the label on the center of the screen
-		label.position =  ccp( size.width /2 , size.height/2 );
-		
-		// add the label as a child to this Layer
-		[self addChild: label];
-		
-		
-		
-		//
-		// Leaderboards and Achievements
-		//
-		
-		// Default font size will be 28 points.
-		[CCMenuItemFont setFontSize:28];
-		
-		// Achievement Menu Item using blocks
-		CCMenuItem *itemAchievement = [CCMenuItemFont itemWithString:@"Achievements" block:^(id sender) {
-			
-			
-			GKAchievementViewController *achivementViewController = [[GKAchievementViewController alloc] init];
-			achivementViewController.achievementDelegate = self;
-			
-			AppController *app = (AppController*) [[UIApplication sharedApplication] delegate];
-			
-			[[app navController] presentModalViewController:achivementViewController animated:YES];
-			
-			[achivementViewController release];
-		}
-									   ];
-
-		// Leaderboard Menu Item using blocks
-		CCMenuItem *itemLeaderboard = [CCMenuItemFont itemWithString:@"Leaderboard" block:^(id sender) {
-			
-			
-			GKLeaderboardViewController *leaderboardViewController = [[GKLeaderboardViewController alloc] init];
-			leaderboardViewController.leaderboardDelegate = self;
-			
-			AppController *app = (AppController*) [[UIApplication sharedApplication] delegate];
-			
-			[[app navController] presentModalViewController:leaderboardViewController animated:YES];
-			
-			[leaderboardViewController release];
-		}
-									   ];
-		
-		CCMenu *menu = [CCMenu menuWithItems:itemAchievement, itemLeaderboard, nil];
-		
-		[menu alignItemsHorizontallyWithPadding:20];
-		[menu setPosition:ccp( size.width/2, size.height/2 - 50)];
-		
-		// Add the menu to the layer
-		[self addChild:menu];
-
-	}
+	if( (self=[super initWithColor:ccc4(255, 255, 255, 255)]) ) {
+        _zoo = [CCSprite spriteWithFile:@"zoo.png"];
+        CGSize winSize = [[CCDirector sharedDirector] winSize];
+        self.isTouchEnabled = YES;
+        _zoo.position = ccp(winSize.width * 0.75, winSize.height * 0.5);
+        [self addChild:_zoo];
+        
+        
+        //initialize the animals in the zoo
+        _movableSprite = [[NSMutableArray alloc] init];
+        NSArray *animals = [NSArray arrayWithObjects:@"cat.png",@"dog.png",@"turtle.png"
+                            ,@"bird.png",@"seeker.png",nil];
+        animalName = [NSMutableArray arrayWithObjects:@"cat",@"dog",@"turtle",
+                      @"bird",@"seeker", nil];
+        
+        displayedName = [[NSMutableArray alloc] init];
+        
+        
+        int i = 0;
+       
+        for(NSString *animalImage in animals){
+            CCSprite  *sprite = [CCSprite spriteWithFile:animalImage] ;
+            sprite.tag = i;
+            [_movableSprite addObject:sprite];
+            float offsetFraction = (float)(i + 1) / (animals.count + 1);
+            sprite.position = ccp(winSize.width / 2 * offsetFraction, winSize.height/2);
+            i++;
+            [self addChild:sprite];
+        }
+        
+        //display the animal name
+        animalNameLabel = [CCLabelTTF labelWithString:@" " fontName:@"Arial" fontSize:30];
+        animalNameLabel.position = ccp(winSize.width * 0.25, winSize.height * 0.25);
+        [animalNameLabel setColor:ccBLACK];
+        
+        //set the animalCount
+        animalCount = animalName.count;
+       
+        //randomly select an animal
+        randomAnimalIndex = arc4random() % animalName.count;
+        [animalNameLabel setString:[animalName objectAtIndex:randomAnimalIndex]];
+        [self addChild:animalNameLabel];
+    }
 	return self;
 }
 
+/*-(void) nextAnimal
+{
+    
+    CGSize winSize = [[CCDirector sharedDirector] winSize];
+    [displayedName addObject:[NSNumber numberWithInt:randomAnimalIndex]];
+    [self removeChild:animalNameLabel cleanup:YES];
+    animalNameLabel = nil;
+    
+    animalNameLabel = [CCLabelTTF labelWithString:[animalName objectAtIndex:randomAnimalIndex] fontName:@"Arial" fontSize:30];
+    animalNameLabel.position = ccp(winSize.width * 0.25, winSize.height * 0.25);
+    [self addChild:animalNameLabel];
+}*/
+
+//register touchDispatcher
+-(void) registerWithTouchDispatcher
+{
+    [[CCTouchDispatcher sharedDispatcher] addTargetedDelegate:self priority:0 swallowsTouches:YES];
+}
+
+-(BOOL)ccTouchBegan:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
+    init_position = touchLocation;
+    [self selectSpriteForTouch:touchLocation];
+    return YES;
+}
+
+-(void) selectSpriteForTouch:(CGPoint) touchLocation
+{
+    CCSprite *newSprite = nil;
+    for(CCSprite *sprite in _movableSprite){
+        if(CGRectContainsPoint(sprite.boundingBox, touchLocation)){
+            newSprite = sprite;
+            break;
+        }
+    }
+    if(newSprite != selSprite){
+        selSprite = newSprite;
+        [selSprite stopAllActions];
+        [selSprite runAction:[CCRotateTo actionWithDuration:0.1 angle:0]];
+        CCRotateTo * rotLeft = [CCRotateBy actionWithDuration:0.1 angle:-4.0];
+        CCRotateTo * rotCenter = [CCRotateBy actionWithDuration:0.1 angle:0.0];
+        CCRotateTo * rotRight = [CCRotateBy actionWithDuration:0.1 angle:4.0];
+        CCSequence * rotSeq = [CCSequence actions:rotLeft, rotCenter, rotRight, rotCenter, nil];
+        [newSprite runAction:[CCRepeatForever actionWithAction:rotSeq]];
+    }
+}
+
+-(void) ccTouchMoved:(UITouch *)touch withEvent:(UIEvent *)event
+{
+    CGPoint touchLocation = [self convertTouchToNodeSpace:touch];
+    
+    CGPoint oldLocation = [touch previousLocationInView:touch.view];
+    oldLocation = [[CCDirector sharedDirector] convertToGL:oldLocation];
+    oldLocation = [self convertToNodeSpace:oldLocation];
+    
+    
+    CGPoint translation = ccpSub(touchLocation, oldLocation);
+    [self panForTranslation: translation];
+}
+
+-(void) panForTranslation:(CGPoint) translation
+{
+    CGPoint newPosition = ccpAdd(selSprite.position, translation);
+    selSprite.position = newPosition;
+}
+
+-(void) gameOverBegine
+{
+    GameOverScene *gameOverScene = [GameOverScene node];
+    [gameOverScene.layer.label setString:@"You Are Right"];
+    [[CCDirector sharedDirector] replaceScene:gameOverScene];
+}
+
+- (void)ccTouchEnded:(UITouch *)touch withEvent:(UIEvent *)event
+{
+	
+    CGSize winSize = [[CCDirector sharedDirector] winSize];
+    
+    
+    if(CGRectContainsPoint(_zoo.boundingBox, selSprite.position) &&
+       (randomAnimalIndex == selSprite.tag)){
+        
+        [selSprite stopAllActions];
+        [selSprite runAction:[CCMoveTo actionWithDuration:0.5
+                                                 position:selSprite.position]];
+        
+        //make the animal fixed
+        [_movableSprite removeObject:selSprite];
+        [self runAction:[CCSequence actions:
+                         [CCDelayTime actionWithDuration:0.5],
+                         [CCCallFunc actionWithTarget:self selector:@selector(gameOverBegine)],
+                         nil]];
+        
+        //[[CCDirector sharedDirector] replaceScene:[HelloWorldLayer scene]];
+        
+       // [[CCDirector sharedDirector] replaceScene:[IntroLayer scene]];
+        //display the next animalName
+       /* while (TRUE) {
+            randomAnimalIndex = 2;//arc4random() % animalName.count;
+            for(NSNumber *number in displayedName){
+                if (randomAnimalIndex != number.intValue) {
+                    break;
+                }
+            }
+            break;
+        }
+        [self nextAnimal];
+        */
+    }else{
+        
+        [selSprite stopAllActions];
+        selSprite.position = ccp(winSize.width/2 * (float)(selSprite.tag + 1)/ (animalCount + 1) , winSize.height/2);
+        [selSprite runAction:[CCMoveTo actionWithDuration:0.5 position:selSprite.position]];
+    }
+    
+}
 // on "dealloc" you need to release all your retained objects
 - (void) dealloc
 {
@@ -112,7 +227,9 @@
 	// cocos2d will automatically release all the children (Label)
 	
 	// don't forget to call "super dealloc"
-	[super dealloc];
+   //  [animalName release];
+   //  animalName = nil;
+    [super dealloc];
 }
 
 #pragma mark GameKit delegate
